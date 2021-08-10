@@ -44,13 +44,15 @@ function VideoUploadPage() {
     }
 
     const onDrop = (files) => {
+        
         let formData = new FormData();
         const config = {
-          header: { "content-type": "multipart/form-data" },
+          header: { 'content-type': 'multipart/form-data' },
         };
         formData.append("file", files[0]);
     
-        Axios.post("/api/video/uploadfiles", formData, config).then((response) => {
+        Axios.post("/api/video/uploadfiles", formData, config)
+            .then(response => {
           if (response.data.success) {
             console.log(response.data);
           } else {
