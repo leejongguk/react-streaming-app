@@ -7,6 +7,7 @@ const { auth } = require("../middleware/auth");
 const multer = require("multer");
 // const { decodeBase64 } = require('bcryptjs');
 var ffmpeg = require("fluent-ffmpeg");
+const { Video } = require('../models/Video');
 
 // STORAGE MULTER CONFIG
 let storage = multer.diskStorage({
@@ -44,6 +45,18 @@ router.post("/uploadfiles", auth, (req, res) => {
 
 })
   
+
+router.post('/uploadVideo',(req,res) =>{
+
+    //비디오 정보들을 저장한다.
+    const video = new Video(req.body)
+    
+    video.save((err, doc)=>{
+        if(err) return res.json({success: false , err})
+        res.status(200).json({success: true})
+    })
+})
+
 
 
 router.post("/thumbnail", (req, res) => {
@@ -88,5 +101,6 @@ router.post("/thumbnail", (req, res) => {
     
 })
   
+
 
 module.exports = router;
