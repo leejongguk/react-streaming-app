@@ -68,11 +68,11 @@ router.post("/thumbnail", (req, res) => {
         console.log('Will generate ' + filenames.join(', '))
         console.log(filenames)
 
-        filePath = "uploads/thumbnails/" + filenames[0]
+        filePath = "uploads/thumbnails/" + filenames[0];
     })
     .on('end', function(){
         console.log('Screenshots taken');
-        return res.json({success: true, url: filePath, fileName: filenames, fileDuration: fileDuration});
+        return res.json({success: true, url: filePath,  fileDuration: fileDuration});
     })
     .on('error',function(err){
         console.error(err);
