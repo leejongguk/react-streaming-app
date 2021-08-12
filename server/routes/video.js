@@ -46,7 +46,7 @@ router.post("/uploadfiles", auth, (req, res) => {
 })
   
 
-router.post('/uploadVideo',(req,res) =>{
+router.get('/uploadVideos',(req,res) =>{
 
     //비디오 정보들을 저장한다.
     const video = new Video(req.body)
@@ -57,6 +57,31 @@ router.post('/uploadVideo',(req,res) =>{
     })
 })
 
+
+
+router.get('/getVideos',(req,res) =>{
+
+    //비디오 DB에서 가져와서 클라이언트에 보낸다.
+    Video.find() //모든비디오를 가져옴
+    .populate('writer') // populate 해줘야 다가져올수있음
+    .exec((err, videos)=>{
+        if(err) return res.status(400).send(err);
+        res.status(200).json({success: true, videos})
+    })
+    
+})
+
+
+router.post('/getVideoDetail',(req,res) =>{
+    Video.findOne({ "_id" : req.body.videoId})
+        .populate('writer')
+        /exec((err,videoDetail)=>{
+            if(err) return res.status(400).send(err)
+            return res.status(200).json({success:true,videoDetail})
+        })
+
+    
+})
 
 
 router.post("/thumbnail", (req, res) => {
