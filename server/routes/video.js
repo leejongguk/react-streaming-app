@@ -143,7 +143,7 @@ router.post("/getSubscriptionVideos",(req,res) =>{
     
 
         //찾은 사람들의 비디오를 가져온다.
-        Video.find({ writer : {in: subscribedUser} })
+        Video.find({ writer : { $in: subscribedUser} })
         .populate('writer')
         .exec((err,videos)=>{
             if(err) return res.status(400).send(err);
