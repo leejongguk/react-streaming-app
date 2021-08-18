@@ -25,37 +25,40 @@ function SingleComment(props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-    }
 
-
-    const variable = {
-        content: CommentValue,
-        writer: user.userData._id,
-        postId: props.postId,
-        responseTo: props.comment._id  //Comment.js 와 다른부분.
-    }
-
-    Axios.post('/api/comment/saveComment',variable)
-    .then(response => {
-        if(response.data.success){
-            console.log(response.data.result)
-            props.refreshFunction(response.data.result)
-            setCommentValue("")
-        } else {
-            alert('커멘트를 저장하지 못했습니다.')
-        
+        const variable = {
+            content: CommentValue,
+            writer: user.userData._id,
+            postId: props.postId,
+            responseTo: props.comment._id  //Comment.js 와 다른부분.
         }
-    })
+
+        Axios.post('/api/comment/saveComment',variable)
+        .then(response => {
+            if(response.data.success){
+                console.log(response.data.result)
+                setCommentValue("")
+                setOpenReply(!OpenReply)
+                props.refreshFunction(response.data.result)
+            } else {
+                alert('커멘트를 저장하지 못했습니다.')
+            
+            }
+        })
+    }
 
     const actions = [
         <span onClick={onClickReplyOpen} key='commnet-basic-reply-to'>Reply to</span>
     ]
     return (
         <div>
+
+
+
             <Comment
                 actions={actions}
                 author={props.comment.writer.name}
-                avatar={<Avatar src={props.comment.writer.image} alt/>}
+                avatar={<Avatar src={props.comment.writer.image} alt='image'/>}
                 content={<p>{props.comment.content}</p>}
             />
 

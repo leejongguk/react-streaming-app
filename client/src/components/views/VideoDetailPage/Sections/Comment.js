@@ -26,8 +26,8 @@ function Comment(props) {
         .then(response => {
             if(response.data.success){
                 console.log(response.data)
-                props.refreshFunction(response.data.result)
                 setCommentValue("")
+                props.refreshFunction(response.data.result)
             } else {
                 alert('코코멘트를 저장하지 못했습니다.')
             
@@ -44,7 +44,11 @@ function Comment(props) {
             {/* comment Lists */}
             {props.commentLists && props.commentLists.map((comment,index)=>(
                 (!comment.responseTo &&
-                    <SingleComment refreshFunction={props.refreshFunction} comment={comment} postId={props.videoId}/>    
+                    <React.Fragment key={index} >
+                        <SingleComment refreshFunction={props.refreshFunction} comment={comment} postId={props.videoId}/>    
+                        {/* <SingleComment comment={comment} postId={props.videoId}/>     */}
+                    </React.Fragment>
+                    
                 )
                 
 
