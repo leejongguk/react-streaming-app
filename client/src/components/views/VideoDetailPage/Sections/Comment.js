@@ -1,33 +1,35 @@
 import Axios from 'axios';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
-
+import SingleComment from './SingleComment';
 
 function Comment(props) {
 
     const videoId = props.postId;
     const user = useSelector(state =>state.user);
-    const [commentValue, setcommentValue] = useState("");
+    const [CommentValue, setCommentValue] = useState("");
 
     const handleClick = (event) => { 
-        setcommentValue(event.currentTarget.value)
+        setCommentValue(event.currentTarget.value)
     }
 
     const onSubmit = (event) => {
         event.preventDefault(); //submit했을때 새로고침 안되도록...
 
         const variable = {
-            content: commentValue,
+            content: CommentValue,
             writer: user.userData._id,
-            postId: videoId
+            postId: videoId //props.postId 
         }
 
         Axios.post('/api/comment/saveComment',variable)
         .then(response => {
             if(response.data.success){
                 console.log(response.data)
+                props.refreshFunction(response.data.result)
+                setCommentValue("")
             } else {
-                alert('커멘트를 저장하지 못했습니다.')
+                alert('코코멘트를 저장하지 못했습니다.')
             
             }
         })
@@ -40,6 +42,13 @@ function Comment(props) {
             <hr />
 
             {/* comment Lists */}
+            {props.commentLists && props.commentLists.map((comment,index)=>(
+                (!comment.responseTo &&
+                    <SingleComment refreshFunction={props.refreshFunction} comment={comment} postId={props.videoId}/>    
+                )
+                
+
+            ))}
 
             {/* Root Comment Form */}
 
@@ -47,7 +56,7 @@ function Comment(props) {
                 <textarea 
                     style={{ width: '100%', borderRadius: '5px' }}
                     onChange={handleClick}
-                    value={commentValue}
+                    value={CommentValue}
                     placeholder="코멘트를 작성해주세요"
                 />
                 <br />
