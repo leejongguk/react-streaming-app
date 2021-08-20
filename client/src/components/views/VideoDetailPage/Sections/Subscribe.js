@@ -11,11 +11,11 @@ function Subscribe(props) {
     useEffect(() => {
         
         let variable = { userTo:props.userTo}
-        Axios.post('/api/video/Subscribe/subscribeNumber', variable)
+        Axios.post('/api/video/subscribe/subscribeNumber', variable)
             .then(response=>{
                 if(response.data.success){
                     console.log()
-                    setSubscribeNumber(response.data.SubscribeNumber)
+                    setSubscribeNumber(response.data.subscribeNumber)
                 } else { 
                     alert('구독자 수 정보를 받아오지 못했습니다.')
                 }
